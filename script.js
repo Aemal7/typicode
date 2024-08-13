@@ -1,6 +1,7 @@
 const apiURL = 'https://jsonplaceholder.typicode.com/todos';
 
 const todoList = document.getElementById('todo-list');
+const form = document.getElementById('todo-form');
 
 function loadTodos() {
   fetch(`${apiURL}?_limit=5`)
@@ -16,4 +17,20 @@ function createToDoInDOM(todo) {
   todoList.appendChild(todoItem);
 }
 
+function addNewItem(e) {
+  e.preventDefault();
+  const input = form.querySelector('#title');
+
+  fetch(apiURL, {
+    method: 'POST',
+    body: JSON.stringify(input.value),
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data));
+}
+
 document.addEventListener('DOMContentLoaded', loadTodos);
+form.addEventListener('submit', addNewItem);
