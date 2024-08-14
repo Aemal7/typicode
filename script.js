@@ -40,8 +40,25 @@ function addNewItem(e) {
 
 function onClickItem(e) {
   if (e.target.classList.contains('item')) {
-    e.target.classList.toggle('done');
+    !e.target.classList.contains('done')
+      ? toggleCompleted(e.target)
+      : deleteItem(e.target);
   }
+}
+
+function toggleCompleted(todo) {
+  fetch(`${apiURL}/${todo.dataset.item}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      title: todo.title,
+      completed: true,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => todo.classList.toggle('done'));
 }
 
 document.addEventListener('DOMContentLoaded', loadTodos);
