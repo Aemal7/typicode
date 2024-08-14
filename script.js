@@ -12,6 +12,7 @@ function loadTodos() {
 function createToDoInDOM(todo) {
   const todoItem = document.createElement('div');
   todoItem.appendChild(document.createTextNode(todo.title));
+  todoItem.classList.add('item');
   todoItem.setAttribute('data-item', todo.id);
   todo.completed && todoItem.classList.add('done');
   todoList.appendChild(todoItem);
@@ -21,16 +22,28 @@ function addNewItem(e) {
   e.preventDefault();
   const input = form.querySelector('#title');
 
+  const newTodo = {
+    title: input.value,
+    completed: false,
+  };
+
   fetch(apiURL, {
     method: 'POST',
-    body: JSON.stringify(input.value),
-    header: {
+    body: JSON.stringify(newTodo),
+    headers: {
       'Content-Type': 'application/json',
     },
   })
     .then((res) => res.json())
-    .then((data) => console.log(data));
+    .then((data) => createToDoInDOM(newTodo));
+}
+
+function onClickItem(e) {
+  if (e.target.classList.contains('item')) {
+    e.target.classList.toggle('done');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadTodos);
 form.addEventListener('submit', addNewItem);
+todoList.addEventListener('click', onClickItem);
