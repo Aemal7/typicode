@@ -50,7 +50,7 @@ function toggleCompleted(todo) {
   fetch(`${apiURL}/${todo.dataset.item}`, {
     method: 'PUT',
     body: JSON.stringify({
-      title: todo.title,
+      title: todo.innerText,
       completed: true,
     }),
     headers: {
@@ -59,6 +59,14 @@ function toggleCompleted(todo) {
   })
     .then((res) => res.json())
     .then((data) => todo.classList.toggle('done'));
+}
+
+function deleteItem(todo) {
+  fetch(`${apiURL}/${todo.dataset.item}`, {
+    method: 'DELETE',
+  })
+    .then((res) => res.json())
+    .then((data) => todo.remove());
 }
 
 document.addEventListener('DOMContentLoaded', loadTodos);
