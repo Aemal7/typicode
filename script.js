@@ -41,16 +41,15 @@ function addNewItem(e) {
 function onClickItem(e) {
   if (e.target.classList.contains('item')) {
     !e.target.classList.contains('done')
-      ? toggleCompleted(e.target)
+      ? markCompleted(e.target)
       : deleteItem(e.target);
   }
 }
 
-function toggleCompleted(todo) {
+function markCompleted(todo) {
   fetch(`${apiURL}/${todo.dataset.item}`, {
     method: 'PUT',
     body: JSON.stringify({
-      title: todo.innerText,
       completed: true,
     }),
     headers: {
@@ -66,7 +65,7 @@ function deleteItem(todo) {
     method: 'DELETE',
   })
     .then((res) => res.json())
-    .then((data) => todo.remove());
+    .then(() => todo.remove());
 }
 
 document.addEventListener('DOMContentLoaded', loadTodos);
