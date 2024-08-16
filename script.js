@@ -57,7 +57,7 @@ function markCompleted(todo) {
     },
   })
     .then((res) => res.json())
-    .then((data) => todo.classList.toggle('done'));
+    .then((data) => todo.classList.add('done'));
 }
 
 function deleteItem(todo) {
